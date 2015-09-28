@@ -1,0 +1,7 @@
+{
+    "name": "devmeta/cmvc",
+    "description": "Tiny PHP 5 Web Application Framework",
+    "require": {
+        "php": ">=5.3.0"
+    }
+}
