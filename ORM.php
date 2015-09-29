@@ -1,4 +1,4 @@
-<?php namespace Devmeta;
+<?php namespace Bootie;
 /**
  * ORM (Object-relational mapping)
  *
