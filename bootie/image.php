@@ -1,6 +1,6 @@
-<?php namespace Bootie;
+<?php namespace bootie;
 
-class Image {
+class image {
 
     static $resizes = [
         'ty'   => "75x75",
@@ -23,10 +23,10 @@ class Image {
     static function destroy_group($filename, $type = 'posts'){
 
       $result = [];
-      $result[] = \Bootie\File::destroy($filename,$type);
+      $result[] = \bootie\file::destroy($filename,$type);
 
       foreach(self::$resizes as $id => $values){
-        $result[] = \Bootie\File::destroy($id . '-' . $filename,$type);
+        $result[] = \bootie\file::destroy($id . '-' . $filename,$type);
       }
 
       return $result;

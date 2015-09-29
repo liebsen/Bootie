@@ -1,8 +1,8 @@
 <?php
 /**
- * APC ORM
+ * APC orm
  *
- * Provides ORM result caching using APC.
+ * Provides orm result caching using APC.
  *
  * @package		AppMVC
  * @author		David Pennington
@@ -10,9 +10,9 @@
  * @license		http://micromvc.com/license
  ********************************** 80 Columns *********************************
  */
-namespace Bootie\ORM;
+namespace bootie\orm;
 
-class APC extends \Bootie\ORM
+class apc extends \bootie\orm
 {
 
 	public static function cache_set($key, $value)

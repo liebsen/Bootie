@@ -1,4 +1,4 @@
-<?php namespace Bootie;
+<?php namespace bootie;
 /**
  * Database
  *
@@ -12,7 +12,7 @@
  ********************************** 80 Columns *********************************
  */
 
-class Database
+class database
 {
 
 	public $pdo = NULL;

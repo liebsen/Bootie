@@ -1,6 +1,6 @@
-<?php namespace Bootie;
+<?php namespace bootie;
 
-class Str extends \DateTime {
+class str extends \DateTime {
 
 	static function words($str,$words=30,$del='...'){
 		return str_word_count($str) < $words ? $str : implode(' ',array_slice(explode(' ',$str),0,$words)) . ' ' . $del;
@@ -68,7 +68,7 @@ class Str extends \DateTime {
         $safe = str_replace("ó", "o", $safe);
         $safe = str_replace("ú", "u", $safe);
 
-		$files = \Bootie\File::dir_content($folder);
+		$files = \bootie\file::dir_content($folder);
         sort($files);
         $j=1;
 
@@ -84,14 +84,14 @@ class Str extends \DateTime {
 
         $safelast = str_replace(' ','-',strtolower($safe));
 
-        return \Bootie\Str::make_unique_filename($safelast,$folder); 
+        return \bootie\str::make_unique_filename($safelast,$folder); 
     }
 
     static function make_unique_filename($filename, $destination)
     {
         $i = 0;
         $path_parts = pathinfo($filename);
-        $path_parts['filename'] = Str::slugify($path_parts['filename']);
+        $path_parts['filename'] = str::slugify($path_parts['filename']);
         $filename = $path_parts['filename'];
 
         while (file_exists($destination.$filename.'-th.'.$path_parts['extension'])) {
@@ -104,25 +104,7 @@ class Str extends \DateTime {
 
     
 	static function nice_size($fs){if ($fs >= 1073741824) $fs = round(($fs / 1073741824 * 100) / 100).' Gb'; elseif ($fs >= 1048576) $fs = round(($fs / 1048576 * 100) / 100).' Mb'; elseif ($fs >= 1024) $fs = round(($fs / 1024 * 100) / 100).' Kb';else $fs = $fs .' b';return $fs;}
-	
-	static function credits2euro($credits = 0, $comma = true){
-		$dinero = (float) Option::where('option_key','credit_euro_' . $credits)
-			->pluck('option_value');
 
-		if(! $dinero ){
-			$dinero = (float) Option::where('option_key','credit_euro')
-				->pluck('option_value');
-		}
-
-		$formateado = sprintf("%01.2f", $dinero * $credits);
-		//$formateado = round(sprintf("%01.2f", $dinero * $credits),2);
-
-		if( $comma ){
-			$formateado = str_replace(".",",",$formateado);
-		}
-
-		return $formateado;
-	}
 
 	static function bold($str, $keywords = '')
 	{

@@ -1,6 +1,6 @@
-<?php namespace Bootie;
+<?php namespace bootie;
 
-class App {
+class app {
 
 	static $ajax = 0;
 	static $filters = [];
@@ -15,12 +15,12 @@ class App {
 	public function load_database($name = 'database')
 	{
 		// Load database
-		$db = new \Bootie\Database(config()->$name);
+		$db = new \bootie\Database(config()->$name);
 
-		// Set default ORM database connection
-		if(empty(\Bootie\ORM::$db))
+		// Set default orm database connection
+		if(empty(\bootie\orm::$db))
 		{
-			\Bootie\ORM::$db = $db;
+			\bootie\orm::$db = $db;
 		}
 
 		return $db;

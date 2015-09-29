@@ -1,4 +1,4 @@
-<?php namespace Bootie;
+<?php namespace bootie;
 /**
  * Error & Exception
  *
@@ -11,7 +11,7 @@
  ********************************** 80 Columns *********************************
  */
 
-class Error
+class error
 {
 	public static $found = FALSE;
 
@@ -44,7 +44,7 @@ class Error
 			return print $message;
 		}
 
-		\Bootie\App::view('system/error',[
+		\bootie\App::view('system/error',[
 			'error' => $error,
 			'code' => $code
 		]);
@@ -71,7 +71,7 @@ class Error
 				return print $message;
 			}
 
-			\Bootie\App::view('system/exception',[
+			\bootie\App::view('system/exception',[
 				'exception' => $e
 			]);
 

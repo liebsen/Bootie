@@ -1,9 +1,9 @@
-<?php namespace Bootie;
+<?php namespace bootie;
 /**
- * ORM (Object-relational mapping)
+ * orm (Object-relational mapping)
  *
  * Allows the application to work directly with data in the database by modeling
- * it as native PHP objects. In other words, no more SQL queries. This ORM class
+ * it as native PHP objects. In other words, no more SQL queries. This orm class
  * uses Index-Only SQL to make the most of object cacheing. It is advised you
  * use APC, Memcached, or another RAM cache along with this class.
  *
@@ -17,7 +17,7 @@
  ********************************** 80 Columns *********************************
  */
 
-class ORM
+class orm
 {
 
 	// object data, related, changed, loaded, saved
@@ -455,7 +455,7 @@ class ORM
 
 
 	/**
-	 * Return the ORM object which matches the where condition
+	 * Return the orm object which matches the where condition
 	 *
 	 * @param array $where conditions
 	 * @return int
