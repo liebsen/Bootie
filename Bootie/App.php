@@ -63,7 +63,6 @@ class App {
 	function run( $route, $match )
 	{
 
-		$route = self::compile($route);
 		$controller = new $route->class;
 
 		if( ! in_array(REQUEST_METHOD, self::$request_methods) OR REQUEST_METHOD !== strtoupper($route->request_method) OR ! method_exists($controller, $route->method))
