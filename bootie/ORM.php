@@ -1,4 +1,4 @@
-<?php namespace bootie;
+<?php namespace Bootie;
 /**
  * orm (Object-relational mapping)
  *
@@ -17,7 +17,7 @@
  ********************************** 80 Columns *********************************
  */
 
-class orm
+class ORM
 {
 
 	// object data, related, changed, loaded, saved

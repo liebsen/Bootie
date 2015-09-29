@@ -1,6 +1,6 @@
-<?php namespace bootie;
+<?php namespace Bootie;
 
-class file extends \DateTime {
+class File extends \DateTime {
 
 	static function file_extension($filename){	$dot= substr(strrchr($filename, "."), 1);$str= explode("?",$dot);return $str[0];}
 

@@ -1,6 +1,6 @@
-<?php namespace bootie;
+<?php namespace Bootie;
 
-class str extends \DateTime {
+class Str extends \DateTime {
 
 	static function words($str,$words=30,$del='...'){
 		return str_word_count($str) < $words ? $str : implode(' ',array_slice(explode(' ',$str),0,$words)) . ' ' . $del;
@@ -68,7 +68,7 @@ class str extends \DateTime {
         $safe = str_replace("ó", "o", $safe);
         $safe = str_replace("ú", "u", $safe);
 
-		$files = \bootie\file::dir_content($folder);
+		$files = \Bootie\file::dir_content($folder);
         sort($files);
         $j=1;
 
@@ -84,7 +84,7 @@ class str extends \DateTime {
 
         $safelast = str_replace(' ','-',strtolower($safe));
 
-        return \bootie\str::make_unique_filename($safelast,$folder); 
+        return \Bootie\str::make_unique_filename($safelast,$folder); 
     }
 
     static function make_unique_filename($filename, $destination)

@@ -1,6 +1,6 @@
-<?php namespace bootie;
+<?php namespace Bootie;
 
-class app {
+class App {
 
 	static $ajax = 0;
 	static $filters = [];
@@ -15,12 +15,12 @@ class app {
 	public function load_database($name = 'database')
 	{
 		// Load database
-		$db = new \bootie\Database(config()->$name);
+		$db = new \Bootie\Database(config()->$name);
 
-		// Set default orm database connection
-		if(empty(\bootie\orm::$db))
+		// Set default ORM database connection
+		if(empty(\Bootie\ORM::$db))
 		{
-			\bootie\orm::$db = $db;
+			\Bootie\ORM::$db = $db;
 		}
 
 		return $db;
@@ -38,7 +38,7 @@ class app {
 	        if(preg_match("~^$path$~", $uri, $match) AND strtoupper($request_method) == REQUEST_METHOD )
 	        {
 
-				return $this->run($route,$match);
+				return $this->run(self::compile($route),$match);
 
 	        }
 	    }
@@ -64,8 +64,9 @@ class app {
 	{
 
 		$route = self::compile($route);
+		$controller = new $route->class;
 
-		if( ! in_array(REQUEST_METHOD, self::$request_methods) OR REQUEST_METHOD !== strtoupper($route->request_method) OR ! is_file ($route->path))
+		if( ! in_array(REQUEST_METHOD, self::$request_methods) OR REQUEST_METHOD !== strtoupper($route->request_method) OR ! method_exists($controller, $route->method))
 		{
 			throw new \Exception('Invalid Request Method.');
 		}
@@ -75,17 +76,6 @@ class app {
 			call_user_func($filter);
 		}
 
-		/* hydratation */
-
-		require $route->path;
-
-    	$controller = new $route->namespace;
-
-    	if ( ! method_exists($controller, $route->method))
-    	{
-    		throw new \Exception('Invalid Class Method.');
-    	}
-
     	$this->load_database();
 
     	if(isset($controller::$layout))
@@ -93,7 +83,7 @@ class app {
     	 	self::$layout = $controller::$layout;
     	}
 				
-		$result = call_user_func_array([$route->namespace,$route->method], $match);
+		$result = call_user_func_array([$controller,$route->method], $match);
 
 		if( isset($route->after) AND is_callable( $filter = self::$filters[$route->after] ))
 		{
@@ -114,12 +104,7 @@ class app {
 	 */
 	private function compile($route){
 		return (object) [
-			'path' => SP . strtolower(str_replace("\\",DS,substr($route['uses'],0,strrpos($route['uses'],'\\')+1))) . strstr(substr($route['uses'],strrpos($route['uses'],'\\')+1),'@',true) . EXT,
-			'namespace' => strstr($route['uses'],'@',true),
-			'class' => strstr(substr($route['uses'],strrpos($route['uses'],'\\')+1),'@',true),
-			'method' => substr($route['uses'],strrpos($route['uses'],'@')+1),
-			'before' => isset($route['before']) ? $route['before'] : null,
-			'after' => isset($route['after']) ? $route['after'] : null,
+			'class' => strstr($route['uses'],'@',true),
 			'method' => substr($route['uses'],strrpos($route['uses'],'@')+1),
 			'request_method' => isset($route['method']) ? $route['method'] : 'GET'
 		];
