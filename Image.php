@@ -1,4 +1,4 @@
-<?php namespace Devmeta\Bootie;
+<?php namespace Devmeta;
 
 class Image {
 
@@ -23,10 +23,10 @@ class Image {
     static function destroy_group($filename, $type = 'posts'){
 
       $result = [];
-      $result[] = \Devmeta\Bootie\File::destroy($filename,$type);
+      $result[] = \Devmeta\File::destroy($filename,$type);
 
       foreach(self::$resizes as $id => $values){
-        $result[] = \Devmeta\Bootie\File::destroy($id . '-' . $filename,$type);
+        $result[] = \Devmeta\File::destroy($id . '-' . $filename,$type);
       }
 
       return $result;

@@ -1,4 +1,4 @@
-<?php namespace Devmeta\Bootie;
+<?php namespace Devmeta;
 
 class App {
 
@@ -15,12 +15,12 @@ class App {
 	public function load_database($name = 'database')
 	{
 		// Load database
-		$db = new \Devmeta\Bootie\Database(config()->$name);
+		$db = new \Devmeta\Database(config()->$name);
 
 		// Set default ORM database connection
-		if(empty(\Devmeta\Bootie\ORM::$db))
+		if(empty(\Devmeta\ORM::$db))
 		{
-			\Devmeta\Bootie\ORM::$db = $db;
+			\Devmeta\ORM::$db = $db;
 		}
 
 		return $db;

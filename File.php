@@ -1,4 +1,4 @@
-<?php namespace Devmeta\Bootie;
+<?php namespace Devmeta;
 
 class File extends \DateTime {
 

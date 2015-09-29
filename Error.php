@@ -1,4 +1,4 @@
-<?php namespace Devmeta\Bootie;
+<?php namespace Devmeta;
 /**
  * Error & Exception
  *
@@ -44,7 +44,7 @@ class Error
 			return print $message;
 		}
 
-		\Devmeta\Bootie\App::view('system/error',[
+		\Devmeta\App::view('system/error',[
 			'error' => $error,
 			'code' => $code
 		]);
@@ -71,7 +71,7 @@ class Error
 				return print $message;
 			}
 
-			\Devmeta\Bootie\App::view('system/exception',[
+			\Devmeta\App::view('system/exception',[
 				'exception' => $e
 			]);
 
