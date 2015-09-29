@@ -10,9 +10,9 @@
  * @license		http://micromvc.com/license
  ********************************** 80 Columns *********************************
  */
-namespace Devmeta\ORM;
+namespace Devmeta\Bootie\ORM;
 
-class APC extends \Devmeta\ORM
+class APC extends \Devmeta\Bootie\ORM
 {
 
 	public static function cache_set($key, $value)
