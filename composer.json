@@ -1,7 +1,12 @@
 {
-    "name": "devmeta/bootie",
-    "description": "Tiny PHP 5 Web Application Framework",
+    "name": "bootie/bootie",
+    "description": "Tiny PHP 5 Web Application Framework Library",
     "require": {
         "php": ">=5.3.0"
-    }
+    },
+	"autoload": {
+		"psr-0": {
+			"Devmeta": "."
+		}
+	}
 }
