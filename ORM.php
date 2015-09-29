@@ -1,4 +1,4 @@
-<?php
+<?php namespace Devmeta;
 /**
  * ORM (Object-relational mapping)
  *
@@ -16,7 +16,6 @@
  * @license		http://micromvc.com/license
  ********************************** 80 Columns *********************************
  */
-namespace App;
 
 class ORM
 {

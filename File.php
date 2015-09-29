@@ -1,4 +1,4 @@
-<?php namespace App\Helpers;
+<?php namespace Devmeta;
 
 class File extends \DateTime {
 

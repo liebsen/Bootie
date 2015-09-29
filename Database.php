@@ -1,4 +1,4 @@
-<?php
+<?php namespace Devmeta;
 /**
  * Database
  *
@@ -11,7 +11,6 @@
  * @license		http://micromvc.com/license
  ********************************** 80 Columns *********************************
  */
-namespace App;
 
 class Database
 {

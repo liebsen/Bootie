@@ -1,6 +1,4 @@
-<?php namespace App\Helpers;
-
-require SP . 'vendor/micro/File.php';
+<?php namespace Devmeta;
 
 class Str extends \DateTime {
 
@@ -70,7 +68,7 @@ class Str extends \DateTime {
         $safe = str_replace("ó", "o", $safe);
         $safe = str_replace("ú", "u", $safe);
 
-		$files = \App\Helpers\File::dir_content($folder);
+		$files = \Devmeta\File::dir_content($folder);
         sort($files);
         $j=1;
 
@@ -86,7 +84,7 @@ class Str extends \DateTime {
 
         $safelast = str_replace(' ','-',strtolower($safe));
 
-        return \App\Helpers\Str::make_unique_filename($safelast,$folder); 
+        return \Devmeta\Str::make_unique_filename($safelast,$folder); 
     }
 
     static function make_unique_filename($filename, $destination)

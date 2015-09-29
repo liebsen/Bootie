@@ -1,6 +1,4 @@
-<?php 
-
-include SP . 'config/routes.php';
+<?php namespace Devmeta;
 
 class App {
 
@@ -17,12 +15,12 @@ class App {
 	public function load_database($name = 'database')
 	{
 		// Load database
-		$db = new \App\Database(config()->$name);
+		$db = new \Devmeta\Database(config()->$name);
 
 		// Set default ORM database connection
-		if(empty(\App\ORM::$db))
+		if(empty(\Devmeta\ORM::$db))
 		{
-			\App\ORM::$db = $db;
+			\Devmeta\ORM::$db = $db;
 		}
 
 		return $db;
