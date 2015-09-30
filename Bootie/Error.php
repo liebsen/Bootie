@@ -14,7 +14,6 @@
 class Error
 {
 	public static $found = FALSE;
-	static $layout = null;
 
 	public static function header()
 	{
