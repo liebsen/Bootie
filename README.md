@@ -2,6 +2,8 @@
 <h3>PHP 5 Micro Web Application Framework</h3>
 <p>Based on Micromvc by David Pennington</p>
 
+<p>Please consider clone this repository before for an <a href="https://github.com/martinfree/BootieProject">Example Project</a></p>
+
 <h4>Improvments</h4>
 <ul>
 <li>Routing request method based.</li>
@@ -20,7 +22,7 @@ $ php cli restore
 </code></pre>
 
 <h4>Nginx</h4>
-<p>Nginx directive recommended</p>
+<p>Nginx suggested directive</p>
 <pre data-language="shell"><code>server {
 
         root /var/www/bootie/public;
