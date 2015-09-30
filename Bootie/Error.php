@@ -14,6 +14,7 @@
 class Error
 {
 	public static $found = FALSE;
+	static $layout = null;
 
 	public static function header()
 	{
@@ -47,8 +48,7 @@ class Error
 		\Bootie\App::view('system/error',[
 			'error' => $error,
 			'code' => $code
-		]);
-
+		],null,true);
 
 		return TRUE;
 	}
@@ -73,12 +73,7 @@ class Error
 
 			\Bootie\App::view('system/exception',[
 				'exception' => $e
-			]);
-
-			//$view = new View('System/Exception');
-			//$view->exception = $e;
-
-			//print $view;
+			],null,true);
 		}
 		catch(\Exception $e)
 		{

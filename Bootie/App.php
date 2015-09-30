@@ -2,10 +2,9 @@
 
 class App {
 
-	static $ajax = 0;
 	static $filters = [];
 	static $routes = [];
-	static $layout = "default";
+	static $layout = null;
 	static $missing_page = 'errors/missing.php';
 	static $request_methods = array('GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD');
 
@@ -124,11 +123,17 @@ class App {
 
 		@extract($data);
 
-		$segments = array_values(array_filter(explode('/',PATH)));
+		if( ! $layout && self::$layout)
+		{
+			$layout = self::$layout;
+		}
+
 		$path_views = SP . 'app/views/';
 		$view = str_replace(".","/",$view) . EXT;
+		$segments = array_values(array_filter(explode('/',PATH)));
 
-    	if ( ! file_exists($path_views . $view)){
+    	if ( ! file_exists($path_views . $view))
+    	{
     		$view = self::$missing_page;
     	}
 
@@ -138,8 +143,11 @@ class App {
 
 		$content = ob_get_clean();
 
-    	include $path_views . 'layouts/' . ($layout ? $layout : self::$layout) . EXT;
+		if( $layout ) 
+		{
+			return include $path_views . 'layouts/' . $layout . EXT;	
+		}
 
-    	return '';
+    	return print $content;
 	}
 }
