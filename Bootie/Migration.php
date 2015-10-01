@@ -128,7 +128,7 @@ abstract class Migration
 	// Path to backup files
 	protected function backup_path()
 	{
-		return SP . 'app/backups/';
+		return SP . 'storage/backups/';
 	}
 
 	// Backup all existing data
