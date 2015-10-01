@@ -61,6 +61,7 @@ class App {
 	 */
 	function run( $route, $match )
 	{
+		global $db;
 
 		$controller = new $route->class;
 
@@ -73,8 +74,6 @@ class App {
 		{
 			call_user_func($filter);
 		}
-
-    	$this->load_database();
 
     	if(isset($controller::$layout))
     	{
@@ -93,7 +92,8 @@ class App {
 			headers_sent() OR header('Content-Type: application/json',true);
 			return (print json_encode($result));
 		} 
-
+		
+		$db = null;
 		return $result;
 	}
 
