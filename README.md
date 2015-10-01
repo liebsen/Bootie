@@ -13,8 +13,10 @@
 
 <h4>Install</h4>
 <p> Create an empty database and set your access credentials here</p>
-<pre><code data-language="shell">$ nano config/config.php
+<pre><code data-language="shell">$ cat config/config.sample.php > config/config.php
+$ nano config/config.php
 </code></pre>
+
 
 <p>With Micromvc migrations tools run</p>
 <pre><code data-language="shell">$ php cli create
