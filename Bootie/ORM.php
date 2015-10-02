@@ -26,6 +26,7 @@ class ORM
 	public static $db;
 	public static $table;
 	public static $key = 'id';
+	public static $perpage;
 	public static $foreign_key;
 	public static $belongs_to;
 	public static $has;					// Has one/many
@@ -428,6 +429,30 @@ class ORM
 		return self::objects(static::$key, 0, 0, $where, $limit, $offset, $order_by);
 	}
 
+	/**
+	 * Fetch an array of objects paginated from this table
+	 *
+	 * @param int $perpage filter
+	 * @param array $order_by conditions
+	 * @param array $where conditions
+	 */
+
+	public static function paginate(array $order_by = NULL, array $where = NULL){
+		return self::fetch($where, static::$perpage, get('page') ? ceil((get('page') - 1) * static::$perpage) : 1, $order_by);
+	}
+
+	/**
+	 * Prints HTML paginator
+	 *
+	 */
+	
+	public static function paginator(){
+		return \Bootie\App::view('shared.paginator',[
+			'pages'	=> range(1,ceil(self::count()/static::$perpage)),
+			'current' => get('page') ?: 1
+		],null,true);
+	}
+
 
 	/**
 	 * Count all database rows matching the conditions
@@ -580,6 +605,8 @@ class ORM
 		}
 		return $count;
 	}
+
+
 
 
 	/**
