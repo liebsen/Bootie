@@ -6,9 +6,11 @@
 
 <h4>Improvments</h4>
 <ul>
-<li>Routing request method based.</li>
-<li>Filters.</li>
-<li>Dispatching method simplification.</li>
+<li>Dispatching method simplification</li>
+<li>Routing request method based</li>
+<li>Filters</li>
+<li>Model pagination</li>
+<li>Flash messages</li>
 </ul>
 
 <h4>Install</h4>
