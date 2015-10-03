@@ -100,8 +100,10 @@ class App {
 	/**
 	 * Compiles route data
 	 */
-	private function compile($route){
-		return (object) [
+	private function compile($route)
+	{
+		return (object) 
+		[
 			'class' => strstr($route['uses'],'@',true),
 			'method' => substr($route['uses'],strrpos($route['uses'],'@')+1),
 			'request_method' => isset($route['method']) ? $route['method'] : 'GET'
@@ -112,18 +114,20 @@ class App {
 	 * Apply filters
 	 */
 
-	static public function filter($filter,$closure){
+	static public function filter($filter, $closure)
+	{
 		return static::$filters[$filter] = $closure;
 	}
 
 	/**
 	 * Display the results
 	 */
-	static public function view($view, $data = array(), $layout = null){
+	static public function view($view, $data = array(), $layout = null, $skip_layout = false)
+	{
 
 		@extract($data);
 
-		if( ! $layout && self::$layout)
+		if( ! $layout AND self::$layout)
 		{
 			$layout = self::$layout;
 		}
@@ -132,10 +136,10 @@ class App {
 		$view = str_replace(".","/",$view) . EXT;
 		$segments = array_values(array_filter(explode('/',PATH)));
 
-    	if ( ! file_exists($path_views . $view))
-    	{
-    		$view = self::$missing_page;
-    	}
+		if ( ! file_exists($path_views . $view))
+		{
+			$view = self::$missing_page;
+		}
 
 		ob_start();
 
@@ -143,11 +147,11 @@ class App {
 
 		$content = ob_get_clean();
 
-		if( $layout ) 
+		if( $layout AND ! $skip_layout ) 
 		{
-			return include $path_views . 'layouts/' . $layout . EXT;	
+			return include $path_views . 'layouts/' . $layout . EXT;
 		}
 
-    	return print $content;
+		return print $content;
 	}
 }
