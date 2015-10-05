@@ -36,9 +36,7 @@ class App {
 
 	        if(preg_match("~^$path$~", $uri, $match) AND strtoupper($request_method) == REQUEST_METHOD )
 	        {
-
-				return $this->run(self::compile($route),$match);
-
+				return $this->run(self::compile($route),array_slice($match,1));
 	        }
 	    }
 
@@ -62,7 +60,7 @@ class App {
 	function run( $route, $match )
 	{
 		global $db;
-
+		
 		$controller = new $route->class;
 
 		if( ! in_array(REQUEST_METHOD, self::$request_methods) OR REQUEST_METHOD !== strtoupper($route->request_method) OR ! method_exists($controller, $route->method))
@@ -92,7 +90,7 @@ class App {
 			headers_sent() OR header('Content-Type: application/json',true);
 			return (print json_encode($result));
 		} 
-		
+
 		$db = null;
 		return $result;
 	}
@@ -100,10 +98,8 @@ class App {
 	/**
 	 * Compiles route data
 	 */
-	private function compile($route)
-	{
-		return (object) 
-		[
+	private function compile($route){
+		return (object) [
 			'class' => strstr($route['uses'],'@',true),
 			'method' => substr($route['uses'],strrpos($route['uses'],'@')+1),
 			'request_method' => isset($route['method']) ? $route['method'] : 'GET'
@@ -114,20 +110,18 @@ class App {
 	 * Apply filters
 	 */
 
-	static public function filter($filter, $closure)
-	{
+	static public function filter($filter,$closure){
 		return static::$filters[$filter] = $closure;
 	}
 
 	/**
 	 * Display the results
 	 */
-	static public function view($view, $data = array(), $layout = null, $skip_layout = false)
-	{
+	static public function view($view, $data = array(), $layout = null, $skip_layout = false){
 
 		@extract($data);
 
-		if( ! $layout AND self::$layout)
+		if( ! $layout && self::$layout)
 		{
 			$layout = self::$layout;
 		}
@@ -136,10 +130,10 @@ class App {
 		$view = str_replace(".","/",$view) . EXT;
 		$segments = array_values(array_filter(explode('/',PATH)));
 
-		if ( ! file_exists($path_views . $view))
-		{
-			$view = self::$missing_page;
-		}
+    	if ( ! file_exists($path_views . $view))
+    	{
+    		$view = self::$missing_page;
+    	}
 
 		ob_start();
 
@@ -149,9 +143,9 @@ class App {
 
 		if( $layout AND ! $skip_layout ) 
 		{
-			return include $path_views . 'layouts/' . $layout . EXT;
+			return include $path_views . 'layouts/' . $layout . EXT;	
 		}
 
-		return print $content;
+    	return print $content;
 	}
 }
