@@ -28,7 +28,7 @@ class App {
 	/**
 	 * Determine which controller gets the route.
 	 */
-	function dispatch($uri)
+	function handle($uri)
 	{
 	    foreach(self::$routes as $path => $route) 
 	    {
@@ -36,7 +36,7 @@ class App {
 
 	        if(preg_match("~^$path$~", $uri, $match) AND strtoupper($request_method) == REQUEST_METHOD )
 	        {
-				return $this->run(self::compile($route),array_slice($match,1));
+				return $this->dispatch(self::compile($route),array_slice($match,1));
 	        }
 	    }
 
@@ -55,9 +55,9 @@ class App {
 	}
 
 	/**
-	 * Runs a controller
+	 * Dispatches a controller
 	 */
-	function run( $route, $match )
+	function dispatch( $route, $match )
 	{
 		global $db;
 		
@@ -121,29 +121,29 @@ class App {
 
 		@extract($data);
 
+		$path = SP . 'app/views/';
+		$view = str_replace(".","/",$view) . EXT;
+		$args = explode('/', rtrim(PATH, '/'));
+
 		if( ! $layout && self::$layout)
 		{
 			$layout = self::$layout;
 		}
 
-		$path_views = SP . 'app/views/';
-		$view = str_replace(".","/",$view) . EXT;
-		$segments = array_values(array_filter(explode('/',PATH)));
-
-    	if ( ! file_exists($path_views . $view))
+    	if ( ! file_exists($path . $view))
     	{
     		$view = self::$missing_page;
     	}
 
 		ob_start();
 
-		require $path_views . $view;
+		require $path . $view;
 
 		$content = ob_get_clean();
 
 		if( $layout AND ! $skip_layout ) 
 		{
-			return include $path_views . 'layouts/' . $layout . EXT;	
+			return include $path . 'layouts/' . $layout . EXT;	
 		}
 
     	return print $content;
