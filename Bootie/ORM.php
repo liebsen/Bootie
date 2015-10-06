@@ -27,6 +27,7 @@ class ORM
 	public static $table;
 	public static $key = 'id';
 	public static $perpage;
+	public static $count;
 	public static $foreign_key;
 	public static $belongs_to;
 	public static $has;					// Has one/many
@@ -437,8 +438,11 @@ class ORM
 	 * @param array $where conditions
 	 */
 
-	public static function paginate(array $order_by = NULL, array $where = NULL){
-		return self::fetch($where, static::$perpage, get('page') ? ceil((get('page') - 1) * static::$perpage) : 1, $order_by);
+	public static function paginate(array $order_by = NULL, array $where = NULL, $perpage = NULL){
+		self::$perpage = $perpage ?: static::$perpage;
+		$paginated = self::fetch($where, self::$perpage, get('page') ? ceil((get('page') - 1) * self::$perpage) : 0, $order_by);
+		self::$count = self::count($where);
+		return $paginated;
 	}
 
 	/**
@@ -448,7 +452,7 @@ class ORM
 	
 	public static function paginator(){
 		return \Bootie\App::view('shared.paginator',[
-			'pages'	=> range(1,ceil(self::count()/static::$perpage)),
+			'pages'	=> range(1,ceil(self::$count/self::$perpage)),
 			'current' => get('page') ?: 1
 		],null,true);
 	}
