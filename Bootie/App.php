@@ -123,7 +123,6 @@ class App {
 
 		$path = SP . 'app/views/';
 		$view = str_replace(".","/",$view) . EXT;
-		$args = explode('/', rtrim(PATH, '/'));
 
 		if( ! $layout && self::$layout)
 		{
