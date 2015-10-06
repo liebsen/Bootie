@@ -32,11 +32,11 @@ class App {
 	{
 	    foreach(self::$routes as $path => $route) 
 	    {
-	    	$request_method = isset($route['method']) ? $route['method'] : 'GET';
+	    	$request_method = $route->request_method ? : 'GET';
 
 	        if(preg_match("~^$path$~", $uri, $match) AND strtoupper($request_method) == REQUEST_METHOD )
 	        {
-				return $this->dispatch(self::compile($route),array_slice($match,1));
+				return $this->dispatch($route,array_slice($match,1));
 	        }
 	    }
 
@@ -50,7 +50,7 @@ class App {
 	{
 	    if($route)
 	    {
-	    	return self::$routes[$uri] = $route;	
+	    	return self::$routes[$uri] = self::compile($route);
 	    } 
 	}
 

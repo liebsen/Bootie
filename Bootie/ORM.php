@@ -438,10 +438,14 @@ class ORM
 	 * @param array $where conditions
 	 */
 
-	public static function paginate(array $order_by = NULL, array $where = NULL, $perpage = NULL){
-		self::$perpage = $perpage ?: static::$perpage;
-		$paginated = self::fetch($where, self::$perpage, get('page') ? ceil((get('page') - 1) * self::$perpage) : 0, $order_by);
+	public static function paginate(array $order_by = NULL, array $where = NULL, $perpage = NULL)
+	{
+		$perpage = $perpage ?: static::$perpage;
+		$paginated = self::fetch($where, $perpage, get('page') ? ceil((get('page') - 1) * $perpage) : 0, $order_by);
+
+		self::$perpage = $perpage;
 		self::$count = self::count($where);
+
 		return $paginated;
 	}
 
@@ -450,7 +454,8 @@ class ORM
 	 *
 	 */
 	
-	public static function paginator(){
+	public static function paginator()
+	{
 		return \Bootie\App::view('shared.paginator',[
 			'pages'	=> range(1,ceil(self::$count/self::$perpage)),
 			'current' => get('page') ?: 1
