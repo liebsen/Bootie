@@ -87,8 +87,7 @@ class App {
 
 		if(AJAX_REQUEST)
 		{
-			headers_sent() OR header('Content-Type: application/json',true);
-			return (print json_encode($result));
+			return self::ajax($result);
 		} 
 
 		$db = null;
@@ -110,14 +109,25 @@ class App {
 	 * Apply filters
 	 */
 
-	static public function filter($filter,$closure){
+	static public function filter($filter,$closure)
+	{
 		return static::$filters[$filter] = $closure;
+	}
+
+	/**
+	 * Returns ajax
+	 */
+	static public function ajax($data = array())
+	{
+		headers_sent() OR header('Content-Type: application/json',true);
+		return (print json_encode($data));
 	}
 
 	/**
 	 * Display the results
 	 */
-	static public function view($view, $data = array(), $layout = null, $skip_layout = false){
+	static public function view($view, $data = array(), $layout = null, $skip_layout = false)
+	{
 
 		@extract($data);
 
