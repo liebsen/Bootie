@@ -2,46 +2,43 @@
 
 class Image {
 
-    static $resizes = [
-        'ty'   => "75x75",
-        'th'   => "225x225",
-        'sd'   => "800x600"
-    ];
-   
-    static function resize_group($destinationPath,$filename){
-     
-        foreach(self::$resizes as $id => $value){
-            $values = explode("x",$value);
-            $w = $values[0];
-            $h = $values[1];
-            $resizedFile = $destinationPath . $id . '-' . $filename;
+    static function resize_group($orig_filename,$destinationPath,$filename)
+    {
+        foreach(config()->img_sizes as $id => $dims)
+        {
+            $w = $dims[0];
+            $h = $dims[1];
+            $folder = $destinationPath . '/' . $id . '/';
 
-            self::smart_resize_image($destinationPath.$filename,null,$w,$h,false,$resizedFile,false,false,100);
+            directory_is_writable($folder,0777);
+
+            self::smart_resize_image($orig_filename,null,$w,$h,false,$folder . $filename,false,false,100);
         }
     }
 
-    static function destroy_group($filename, $type = 'posts'){
+    static function destroy_group($filename, $type = ''){
 
       $result = [];
-      $result[] = \Bootie\file::destroy($filename,$type);
+      $result[] = \Bootie\Image::destroy($filename,$type . '/orig');
 
-      foreach(self::$resizes as $id => $values){
-        $result[] = \Bootie\file::destroy($id . '-' . $filename,$type);
+      foreach(config()->img_sizes as $id => $values)
+      {
+        $result[] = \Bootie\Image::destroy($filename,$type . '/' . $id);
       }
 
       return $result;
     }
 
     static function smart_resize_image($file,
-                                  $string             = null,
-                                  $width              = 0, 
-                                  $height             = 0, 
-                                  $proportional       = false, 
-                                  $output             = 'file', 
-                                  $delete_original    = true, 
-                                  $use_linux_commands = false,
-                                  $quality = 100
-             ) {
+        $string             = null,
+        $width              = 0, 
+        $height             = 0, 
+        $proportional       = false, 
+        $output             = 'file', 
+        $delete_original    = true, 
+        $use_linux_commands = false,
+        $quality = 100
+      ) {
           
         if ( $height <= 0 && $width <= 0 ) return false;
         if ( $file === null && $string === null ) return false;
@@ -102,8 +99,8 @@ class Image {
             imagesavealpha($image_resized, true);
           }
         }
+
         imagecopyresampled($image_resized, $image, 0, 0, $cropWidth, $cropHeight, $final_width, $final_height, $width_old - 2 * $cropWidth, $height_old - 2 * $cropHeight);
-        
         
         # Taking care of original, if needed
         if ( $delete_original ) {
@@ -140,11 +137,16 @@ class Image {
         }
 
         return true;
-      }
+    }
 
-}//class
+    static function destroy($filename,$path){
 
-/*
-$im = new Resize("http://mysite.com/myimage.jpg");
-imagejpeg($im -> crop(250, 156));
-*/
+        $filepath = SP . "public/upload/{$path}/{$filename}";
+
+        if( is_file( $filepath ) ){
+            return unlink($filepath);
+        }
+
+        return false;
+    } 
+}
