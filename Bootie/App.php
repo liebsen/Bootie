@@ -13,6 +13,9 @@ class App {
 	 */
 	public function load_database($name = 'database')
 	{
+
+		global $db;
+		
 		// Load database
 		$db = new \Bootie\Database(config()->$name);
 
@@ -91,6 +94,7 @@ class App {
 		} 
 
 		$db = null;
+
 		return $result;
 	}
 
