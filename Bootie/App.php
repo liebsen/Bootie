@@ -102,7 +102,7 @@ class App {
 		return (object) [
 			'class' => strstr($route['uses'],'@',true),
 			'method' => substr($route['uses'],strrpos($route['uses'],'@')+1),
-			'request_method' => isset($route['method']) ? $route['method'] : 'GET'
+			'request_method' => isset($route['method']) ? strtoupper($route['method']) : 'GET'
 		];
 	}
 
