@@ -4,8 +4,8 @@
 <p>This is the Bootie Framework Library</p>
 <p>You can see an <a href="http://bootie.devmeta.net">online demo of this project</a></p>
 <p>Please consider clone this repository before for an <a href="https://github.com/martinfree/BootieProject">Example Project</a></p>
-<p>You can see <a href="https://github.com/martinfree/BootieREST">REST example</a></p>
-<p>You can also clone a <a href="https://github.com/martinfree/BootieScheleton">scheleton project</a></p>
+<p>You can see a <a href="https://github.com/martinfree/BootieREST">REST Example</a></p>
+<p>You can also clone a <a href="https://github.com/martinfree/BootieScheleton">Scheleton Project</a></p>
 
 <h4>Improvments</h4>
 <ul>
