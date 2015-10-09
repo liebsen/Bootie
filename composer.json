@@ -1,5 +1,5 @@
 {
-    "name": "bootie/bootie",
+    "name": "bootie/framework",
     "type": "library",
     "description": "Tiny PHP 5 Web Application Framework Library",
 	"keywords": ["php","mvc","framework"],
