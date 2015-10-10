@@ -12,7 +12,7 @@ class Image {
 
             directory_is_writable($folder,0777);
 
-            self::smart_resize_image($orig_filename,null,$w,$h,false,$folder . $filename,false,false,100);
+            self::smart_resize_image($orig_filename,null,$w,$h,true,$folder . $filename,false,false,100);
         }
     }
 
