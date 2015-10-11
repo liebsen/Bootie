@@ -5,33 +5,14 @@ class App {
 	static $filters = [];
 	static $routes = [];
 	static $layout = null;
+	static $mime_allow = ['html','xml'];
 	static $missing_page = 'errors/missing.php';
 	static $request_methods = array('GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD');
 
 	/**
-	 * Load database connection
-	 */
-	public function load_database($name = 'database')
-	{
-
-		global $db;
-		
-		// Load database
-		$db = new \Bootie\Database(config()->$name);
-
-		// Set default ORM database connection
-		if(empty(\Bootie\ORM::$db))
-		{
-			\Bootie\ORM::$db = $db;
-		}
-
-		return $db;
-	}
-
-	/**
 	 * Determine which controller gets the route.
 	 */
-	function handle($uri)
+	function run($uri)
 	{
 	    foreach(self::$routes as $path => $route) 
 	    {
@@ -44,6 +25,25 @@ class App {
 	    }
 
 		throw new \Exception('Missing Route.');
+	}
+
+	/**
+	 * Load database connection
+	 */
+	public function load_database($name = 'database')
+	{
+		global $db;
+
+		// Load database
+		$db = new \Bootie\Database(config()->$name);
+
+		// Set default ORM database connection
+		if(empty(\Bootie\ORM::$db))
+		{
+			\Bootie\ORM::$db = $db;
+		}
+
+		return $db;
 	}
 
 	/**
@@ -94,7 +94,6 @@ class App {
 		} 
 
 		$db = null;
-
 		return $result;
 	}
 
@@ -135,13 +134,24 @@ class App {
 
 		@extract($data);
 
+		$ext = pathinfo($view, PATHINFO_EXTENSION);
 		$path = SP . 'app/views/';
-		$view = str_replace(".","/",$view) . EXT;
+
+		$view = str_replace(".","/",$view);
 
 		if( ! $layout && self::$layout)
 		{
 			$layout = self::$layout;
 		}
+
+    	if( ! in_array( $ext, self::$mime_allow ))
+    	{
+    		$view = $view . EXT;
+    	}
+    	else
+    	{
+    		$view = str_replace("/$ext",".$ext",$view);
+    	}
 
     	if ( ! file_exists($path . $view))
     	{
