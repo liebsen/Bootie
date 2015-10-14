@@ -4,6 +4,7 @@ class App {
 
 	static $filters = [];
 	static $routes = [];
+	static $shared = [];
 	static $layout = null;
 	static $mime_allow = ['html','xml'];
 	static $missing_page = 'errors/missing.php';
@@ -111,10 +112,17 @@ class App {
 	/**
 	 * Apply filters
 	 */
-
 	static public function filter($filter,$closure)
 	{
 		return static::$filters[$filter] = $closure;
+	}
+
+	/**
+	 * Collects data to be shared through all application layers
+	 */
+	static function share( $share, $data = null )
+	{
+		return static::$shared[$share] = $data;
 	}
 
 	/**
@@ -133,6 +141,7 @@ class App {
 	{
 
 		@extract($data);
+		@extract(static::$shared);
 
 		$ext = pathinfo($view, PATHINFO_EXTENSION);
 		$path = SP . 'app/views/';
