@@ -8,8 +8,9 @@ class Cache {
 
 	static $cache_ext  = '.html'; //file extension
 	static $cache_time     = 3600;  //Cache file expires afere these seconds (1 hour = 3600 sec)
-	static $cache_folder   = __DIR__ '/../storage/cache/'; //folder to store Cache files
+	static $cache_folder   = '/storage/cache/'; //folder to store Cache files
 	static $ignore_pages   = array('', '');
+	static $ignore   = false;
 	static $cache_file   = '';
 
 	/**
@@ -36,28 +37,26 @@ class Cache {
 	{
 
 		$dynamic_url    = 'http://'.$_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . $_SERVER['QUERY_STRING']; // requested dynamic page (full url)
-		$cache_file = self::$cache_folder.md5($dynamic_url).self::$cache_ext; // construct a cache file
-		$ignore = (in_array($dynamic_url,self::$ignore_pages))?true:false; //check if url is in ignore list
+		self::$cache_file = self::$cache_folder.md5($dynamic_url).self::$cache_ext; // construct a cache file
+		self::$ignore = (in_array($dynamic_url,self::$ignore_pages))?true:false; //check if url is in ignore list
 
-		if ( ! $ignore && file_exists($cache_file) && time() - self::$cache_time < filemtime($cache_file)) { //check Cache exist and it's not expired.
+		if ( ! self::$ignore && file_exists(self::$cache_file) && time() - self::$cache_time < filemtime(self::$cache_file)) { //check Cache exist and it's not expired.
 		    ob_start('ob_gzhandler'); //Turn on output buffering, "ob_gzhandler" for the compressed page with gzip.
-		    readfile($cache_file); //read Cache file
-		    echo '<!-- cached page - '.date('l jS \of F Y h:i:s A', filemtime($cache_file)).', Page : '.$dynamic_url.' -->';
+		    readfile(self::$cache_file); //read Cache file
+		    echo '<!-- cached page - '.date('l jS \of F Y h:i:s A', filemtime(self::$cache_file)).', Page : '.$dynamic_url.' -->';
 		    ob_end_flush(); //Flush and turn off output buffering
 		    exit(); //no need to proceed further, exit the flow.
 		}
 
 		//Turn on output buffering with gzip compression.
 		ob_start('ob_gzhandler');
-
-		self::$cache_file = $cache_file;		
 	}
 
 	/**
 	 * Store a page in cache
 	 */
 
-	static public function store($url)
+	static public function store()
 	{
 		if (!is_dir(self::$cache_folder)) { //create a new folder if we need to
 		    mkdir(self::$cache_folder);
