@@ -8,7 +8,7 @@ class Cache {
 
 	static $cache_ext  = '.html'; //file extension
 	static $cache_time     = 3600;  //Cache file expires afere these seconds (1 hour = 3600 sec)
-	static $cache_folder   = SP . 'storage/cache/'; //folder to store Cache files
+	static $cache_folder   = __DIR__ '/../storage/cache/'; //folder to store Cache files
 	static $ignore_pages   = array('', '');
 	static $cache_file   = '';
 
