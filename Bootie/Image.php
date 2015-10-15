@@ -2,12 +2,12 @@
 
 class Image {
 
-    static function resize_group($orig_filename,$destinationPath,$filename)
+    static function resize_group($orig_filename,$destinationPath,$filename,$dims = array())
     {
-        foreach(config()->img_sizes as $id => $dims)
+        foreach($dims as $id => $dim)
         {
-            $w = $dims[0];
-            $h = $dims[1];
+            $w = $dim[0];
+            $h = $dim[1];
             $folder = $destinationPath . '/' . $id . '/';
 
             directory_is_writable($folder,0777);
