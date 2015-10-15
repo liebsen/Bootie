@@ -61,7 +61,7 @@ class Cache {
 		if (!is_dir(self::$cache_folder)) { //create a new folder if we need to
 		    mkdir(self::$cache_folder);
 		}
-		if(!$ignore){
+		if(!self::$ignore){
 		    $fp = fopen(self::$cache_file, 'w');  //open file for writing
 		    fwrite($fp, ob_get_contents()); //write contents of the output buffer in Cache file
 		    fclose($fp); //Close file pointer
