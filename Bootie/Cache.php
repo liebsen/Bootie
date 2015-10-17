@@ -20,7 +20,7 @@ class Cache {
 	 * then Your Website Content Ends here
 	 */
 
-	static public function init($config,$uri)
+	static public function init($config)
 	{
 
 		if($config)
@@ -40,19 +40,20 @@ class Cache {
 	        }
 	    }
 
-		self::$uri = $_SERVER['HTTP_HOST'] . $uri;
 		return self::check();
 	}
 
 	static public function check()
 	{
 
-		self::$cache_file = self::$cache_folder.md5(self::$uri).self::$cache_ext; // construct a cache file
+		$uri = 'http://'.$_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . $_SERVER['QUERY_STRING'];
+		self::$cache_file = self::$cache_folder.md5($uri).self::$cache_ext; // construct a cache file
+
 		if ( ! self::$ignore && file_exists(self::$cache_file) && time() - self::$cache_time < filemtime(self::$cache_file)) 
 		{ //check Cache exist and it's not expired.
 		    ob_start('ob_gzhandler'); //Turn on output buffering, "ob_gzhandler" for the compressed page with gzip.
 		    readfile(self::$cache_file); //read Cache file
-		    echo '<!-- cached page - '.date('l jS \of F Y h:i:s A', filemtime(self::$cache_file)).', Page : '.self::$uri.' -->';
+		    echo '<!-- cached page - '.date('l jS \of F Y h:i:s A', filemtime(self::$cache_file)).', Page : '.$uri.' -->';
 		    ob_end_flush(); //Flush and turn off output buffering
 		    exit(); //no need to proceed further, exit the flow.
 		}
