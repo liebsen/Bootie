@@ -12,6 +12,7 @@
 <li>Dispatching method simplification</li>
 <li>Routing request method based</li>
 <li>Filters</li>
+<li>Speed Cache</li>
 <li>Model pagination</li>
 <li>Flash messages</li>
 </ul>
