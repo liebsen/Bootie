@@ -40,7 +40,7 @@ class Cache {
 	        }
 	    }
 
-		self::$uri = $uri;
+		self::$uri = $_SERVER['HTTP_HOST'] . $uri;
 		return self::check();
 	}
 
