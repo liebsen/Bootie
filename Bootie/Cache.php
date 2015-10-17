@@ -20,7 +20,7 @@ class Cache {
 	 * then Your Website Content Ends here
 	 */
 
-	static public function init($config)
+	static public function init($config,$path)
 	{
 
 		if($config)
@@ -31,9 +31,9 @@ class Cache {
 			self::$ignore_pages   = $config['ignore_pages']?:self::$ignore_pages;
 		}
 
-	    foreach(self::$ignore_pages as $path) 
+	    foreach(self::$ignore_pages as $route) 
 	    {
-	        if(preg_match("~^$path$~", $uri, $match))
+	        if(preg_match("~^$route$~", $path, $match))
 	        {
 	        	self::$ignore = true;
 	        	return false;
