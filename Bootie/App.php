@@ -2,12 +2,12 @@
 
 class App {
 
-	static $filters = [];
-	static $routes = [];
-	static $shared = [];
-	static $connections = [];
+	static $filters = array();
+	static $routes = array();
+	static $shared = array();
+	static $connections = array();
 	static $layout = null;
-	static $mime_allow = ['html','xml'];
+	static $mime_allow = array('html','xml');
 	static $missing_page = 'errors/missing.php';
 	static $request_methods = array('GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD');
 
@@ -113,11 +113,11 @@ class App {
 	 * Compiles route data
 	 */
 	private function compile($route){
-		return (object) [
+		return (object) array(
 			'class' => strstr($route['uses'],'@',true),
 			'method' => substr($route['uses'],strrpos($route['uses'],'@')+1),
 			'request_method' => isset($route['method']) ? strtoupper($route['method']) : 'GET'
-		];
+		);
 	}
 
 	/**

@@ -10,7 +10,7 @@ class Cache {
 	static $cache_ext  = '.html'; //file extension
 	static $cache_time     = 3600;  //Cache file expires afere these seconds (1 hour = 3600 sec)
 	static $cache_folder   = '/storage/cache/'; //folder to store Cache files
-	static $ignore_pages   = [];
+	static $ignore_pages   = array();
 	static $ignore   = false;
 	static $cache_file   = '';
 
