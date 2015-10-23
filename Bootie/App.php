@@ -5,6 +5,7 @@ class App {
 	static $filters = [];
 	static $routes = [];
 	static $shared = [];
+	static $connections = [];
 	static $layout = null;
 	static $mime_allow = ['html','xml'];
 	static $missing_page = 'errors/missing.php';
@@ -31,20 +32,31 @@ class App {
 	/**
 	 * Load database connection
 	 */
-	public function load_database($name = 'database')
+	public function load_database($key = 'default')
 	{
-		global $db;
-
-		// Load database
-		$db = new \Bootie\Database(config()->$name);
-
-		// Set default ORM database connection
-		if(empty(\Bootie\ORM::$db))
+		if( array_key_exists($key,self::$connections))
 		{
+			$db = self::$connections[$key];
 			\Bootie\ORM::$db = $db;
+
+			return $db;
 		}
 
+		// Load database
+		$db = new \Bootie\Database(config()->database['connections'][$key]);
+		\Bootie\ORM::$db = $db;
+
+		self::$connections[$key] = $db;
+
 		return $db;
+	}
+
+	public function close_database_connections()
+	{
+		foreach(self::$connections as $key => $connection)
+		{
+			self::$connections[$key] = null;
+		}
 	}
 
 	/**
@@ -63,8 +75,6 @@ class App {
 	 */
 	function dispatch( $route, $match )
 	{
-		global $db;
-		
 		$controller = new $route->class;
 
 		if( ! in_array(REQUEST_METHOD, self::$request_methods) OR REQUEST_METHOD !== strtoupper($route->request_method) OR ! method_exists($controller, $route->method))
@@ -94,7 +104,8 @@ class App {
 			return self::ajax($result);
 		} 
 
-		$db = null;
+		self::close_database_connections();
+
 		return $result;
 	}
 
