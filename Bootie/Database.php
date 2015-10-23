@@ -34,8 +34,14 @@ class Database
 	 *
 	 * @param array $config
 	 */
-	public function __construct(array $config)
+	public function __construct(array $config = null)
 	{
+
+		if( ! $config)
+		{
+			$config = config()->database['connections']['default'];
+		}
+
 		// Auto-detect database type from DNS
 		$this->type = current(explode(':', $config['dns'], 2));
 
