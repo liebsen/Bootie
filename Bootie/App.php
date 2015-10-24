@@ -116,7 +116,9 @@ class App {
 		return (object) array(
 			'class' => strstr($route['uses'],'@',true),
 			'method' => substr($route['uses'],strrpos($route['uses'],'@')+1),
-			'request_method' => isset($route['method']) ? strtoupper($route['method']) : 'GET'
+			'request_method' => isset($route['method']) ? strtoupper($route['method']) : 'GET',
+			'before' => isset($route['before'])?$route['before']:null,
+			'after' => isset($route['after'])?$route['after']:null,
 		);
 	}
 
