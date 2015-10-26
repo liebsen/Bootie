@@ -143,8 +143,8 @@ class App {
 	 */
 	static public function ajax($data = array())
 	{
-		headers_sent() OR header('Content-Type: application/json',true);
-		return (print json_encode($data));
+		if(is_array($data)) headers_sent() OR header('Content-Type: application/json',true);
+		return json_encode($data);
 	}
 
 	/**
