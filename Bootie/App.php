@@ -101,7 +101,7 @@ class App {
 
 		if(AJAX_REQUEST)
 		{
-			return self::ajax($result);
+			return print self::ajax($result);
 		} 
 
 		self::close_database_connections();
