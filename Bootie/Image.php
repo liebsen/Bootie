@@ -2,7 +2,7 @@
 
 class Image {
 
-    static function resize_group($orig_filename,$destinationPath,$filename,$dims = array())
+    static function resize_group($orig_filename,$destinationPath,$filename,$dims = array(),$crop = false)
     {
         foreach($dims as $id => $dim)
         {
@@ -12,7 +12,7 @@ class Image {
 
             directory_is_writable($folder,0777);
 
-            self::smart_resize_image($orig_filename,null,$w,$h,true,$folder . $filename,false,false,100);
+            self::smart_resize_image($orig_filename,null,$w,$h,$crop,$folder . $filename,false,false,100);
         }
     }
 
