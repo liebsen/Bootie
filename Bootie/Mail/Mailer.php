@@ -1,16 +1,14 @@
 <?php namespace Bootie\Mail;
 
-class Mailer extends \Bootie\Mail\PHPMailerLite {
+class Mailer {
 
 	public function send($recipient,$subject,$tpl,$data=array(),$from="")
 	{
 
-		if( in_array($_SERVER['REMOTE_ADDR'],['127.0.0.1'])) return false;
-
-		$message = template($tpl,$data);
+		$message = \template($tpl,$data);
 
 		//Create a new PHPMailer instance
-		$mail = new \Bootie\PHPMailerLite;
+		$mail = new \Bootie\Mail\PHPMailerLite;
 		// Set PHPMailer to use the sendmail transport
 		$mail->isSendmail();
 		//Set who the message is to be sent from
@@ -31,6 +29,9 @@ class Mailer extends \Bootie\Mail\PHPMailerLite {
 		//Attach an image file
 		//$mail->addAttachment('images/phpmailer_mini.png');
 		//send the message, check for errors
+
+				//if( in_array($_SERVER['REMOTE_ADDR'],['127.0.0.1'])) return false;
+
 		if (!$mail->send()) {
 		    echo "Mailer Error: " . $mail->ErrorInfo;
 		} else {
