@@ -188,7 +188,7 @@ class App {
 
 		if( $layout AND ! $skip_layout ) 
 		{
-			return include $path . 'layouts/' . $layout . EXT;	
+			return include $path . 'layouts/' . str_replace(".","/",$layout) . EXT;	
 		}
 
     	return print $content;
