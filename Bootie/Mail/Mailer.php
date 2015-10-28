@@ -1,6 +1,6 @@
 <?php namespace Bootie\Mail;
 
-class Mailer extends \Bootie\PHPMailerLite {
+class Mailer extends \Bootie\Mail\PHPMailerLite {
 
 	public function send($recipient,$subject,$tpl,$data=array(),$from="")
 	{
