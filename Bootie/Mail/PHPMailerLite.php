@@ -1246,7 +1246,7 @@ class PHPMailerLite {
             $file_buffer  = $this->EncodeString($file_buffer, $encoding);
             if (PHP_VERSION < 6) { set_magic_quotes_runtime($magic_quotes); }
             return $file_buffer;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->SetError($e->getMessage());
             return '';
         }
@@ -1934,7 +1934,7 @@ class PHPMailerLite {
             } else {
                 throw new phpmailerException($this->Lang('variable_set') . $name, self::STOP_CRITICAL);
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->SetError($e->getMessage());
             if ($e->getCode() == self::STOP_CRITICAL) {
                 return false;
@@ -2095,7 +2095,7 @@ class PHPMailerLite {
     }
 }
 
-class phpmailerException extends Exception {
+class phpmailerException extends \Exception {
     public function errorMessage() {
         $errorMsg = '<strong>' . $this->getMessage() . "</strong><br />\n";
         return $errorMsg;
