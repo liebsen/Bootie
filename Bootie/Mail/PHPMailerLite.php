@@ -1,4 +1,4 @@
-<?php namespace Bootie;
+<?php namespace Bootie\Mail;
 /*~ class.phpmailer-lite.php
 .---------------------------------------------------------------------------.
 |  Software: PHPMailer Lite - PHP email class                               |

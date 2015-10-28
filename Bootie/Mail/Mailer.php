@@ -1,4 +1,4 @@
-<?php namespace Bootie;
+<?php namespace Bootie\Mail;
 
 class Mailer extends \Bootie\PHPMailerLite {
 
