@@ -30,12 +30,12 @@ class Mailer {
 		//$mail->addAttachment('images/phpmailer_mini.png');
 		//send the message, check for errors
 
-				//if( in_array($_SERVER['REMOTE_ADDR'],['127.0.0.1'])) return false;
-
 		if (!$mail->send()) {
-		    echo "Mailer Error: " . $mail->ErrorInfo;
+		    //echo "Mailer Error: " . $mail->ErrorInfo;
+		    log_message("Mailer Error: " . $mail->ErrorInfo);
+		    return false;
 		} else {
-		    //echo "Message sent!";
+		    return true;
 		}
 	}
 
