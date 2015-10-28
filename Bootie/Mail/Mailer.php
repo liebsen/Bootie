@@ -31,12 +31,11 @@ class Mailer {
 		//send the message, check for errors
 
 		if (!$mail->send()) {
-		    //echo "Mailer Error: " . $mail->ErrorInfo;
 		    log_message("Mailer Error: " . $mail->ErrorInfo);
 		    return false;
-		} else {
-		    return true;
-		}
+		} 
+
+		return true;
 	}
 
 	function template($tpl,$data=array())
