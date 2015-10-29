@@ -101,7 +101,7 @@ class App {
 
 		if(AJAX_REQUEST)
 		{
-			return print self::ajax($result);
+			return self::ajax($result);
 		} 
 
 		self::close_database_connections();
@@ -143,8 +143,13 @@ class App {
 	 */
 	static public function ajax($data = array())
 	{
-		if(is_array($data)) headers_sent() OR header('Content-Type: application/json',true);
-		return json_encode($data);
+		if(is_array($data)) 
+		{
+			headers_sent() OR header('Content-Type: application/json',true);
+			return print json_encode($data);
+		}
+		
+		return $data;
 	}
 
 	/**
