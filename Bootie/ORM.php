@@ -48,7 +48,7 @@ class ORM
 
 		if(! $id) return;
 
-		if(is_numeric($id))
+		if(is_numeric($id) OR strlen($id) < 255)
 		{
 			$this->data[static::$key] = $id;
 		}
