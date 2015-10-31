@@ -37,6 +37,12 @@ class App {
 		if( array_key_exists($key,self::$connections))
 		{
 			$db = self::$connections[$key];
+
+			if(\Bootie\ORM::$db)
+			{
+				\Bootie\ORM::$db = null;	
+			}
+
 			\Bootie\ORM::$db = $db;
 
 			return $db;
@@ -44,6 +50,7 @@ class App {
 
 		// Load database
 		$db = new \Bootie\Database(config()->database['connections'][$key]);
+
 		\Bootie\ORM::$db = $db;
 
 		self::$connections[$key] = $db;
