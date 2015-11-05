@@ -58,9 +58,9 @@ class App {
 
 	public function close_database_connections()
 	{
-		foreach(self::$connections as $key => $connection)
+		foreach(\Bootie\ORM::$connections as $key => $connection)
 		{
-			self::$connections[$key] = null;
+			\Bootie\ORM::$connections[$key] = null;
 		}
 	}
 
