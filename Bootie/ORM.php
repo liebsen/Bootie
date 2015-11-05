@@ -17,7 +17,7 @@
  ********************************** 80 Columns *********************************
  */
 
-class ORM
+class ORM 
 {
 
 	// object data, related, changed, loaded, saved
@@ -35,7 +35,8 @@ class ORM
 	public static $order_by;
 	public static $cache = 0;
 	public static $cascade_delete = FALSE;
-
+	public static $connection = 'default';
+	public static $connections = array();
 
 	/**
 	 * Create a new database entity object
@@ -400,6 +401,8 @@ class ORM
 	 */
 	public static function select($func, $column, $model = NULL, $where = NULL, $limit = 0, $offset = 0, $order = NULL)
 	{
+		self::check_connection();
+
 		$model = $model ?: get_called_class();
 		$order = ($order ?: array()) + (static::$order_by ?: array());
 
@@ -416,6 +419,36 @@ class ORM
 		return static::$db->$func($sql, $params, (($column == '*' OR strpos($column,',')) ? NULL : 0));
 	}
 
+	/**
+	 * Checks the current connection
+	 *
+	 * @return dblink
+	 */
+	private static function check_connection()
+	{
+
+		$key = static::$connection;
+
+		if( array_key_exists($key,self::$connections))
+		{
+			$db = self::$connections[$key];
+
+			if(self::$db)
+			{
+				self::$db = null;	
+			}
+
+			return self::$db = $db;
+		}
+
+		// Load database
+		$db = new \Bootie\Database(config()->database['connections'][$key]);
+	
+		self::$connections[$key] = $db;
+
+		return self::$db = $db;
+	}
+	
 
 	/**
 	 * Fetch an array of objects from this table
@@ -539,6 +572,8 @@ class ORM
 	 */
 	protected function insert(array $data)
 	{
+		self::check_connection();
+
 		$id = static::$db->insert(static::$table, $data);
 
 		$this->data[static::$key] = $id;
@@ -553,8 +588,11 @@ class ORM
 	 * @param array $d data
 	 * @return boolean
 	 */
+
 	protected function update(array $data)
 	{
+		self::check_connection();
+
 		$result = static::$db->update(static::$table, $data, array(static::$key => $this->data[static::$key]));
 
 		// Invalidate cache
@@ -573,6 +611,9 @@ class ORM
 	 */
 	public function delete($id = NULL)
 	{
+
+		self::check_connection();
+
 		$id = $id ?: $this->key();
 
 		$count = 0;
@@ -614,9 +655,6 @@ class ORM
 		}
 		return $count;
 	}
-
-
-
 
 	/**
 	 * Store a value in the cache
