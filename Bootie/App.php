@@ -5,7 +5,6 @@ class App {
 	static $filters = array();
 	static $routes = array();
 	static $shared = array();
-	static $connections = array();
 	static $layout = null;
 	static $mime_allow = array('html','xml');
 	static $missing_page = 'errors/missing.php';
@@ -34,9 +33,9 @@ class App {
 	 */
 	public function load_database($key = 'default')
 	{
-		if( array_key_exists($key,self::$connections))
+		if( array_key_exists($key,\Bootie\ORM::$connections))
 		{
-			$db = self::$connections[$key];
+			$db = \Bootie\ORM::$connections[$key];
 
 			if(\Bootie\ORM::$db)
 			{
@@ -52,8 +51,7 @@ class App {
 		$db = new \Bootie\Database(config()->database['connections'][$key]);
 
 		\Bootie\ORM::$db = $db;
-
-		self::$connections[$key] = $db;
+		\Bootie\ORM::$connections[$key] = $db;
 
 		return $db;
 	}
