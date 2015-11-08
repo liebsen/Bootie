@@ -5,6 +5,8 @@ class Mailer {
 	public function send($recipient,$subject,$tpl,$data=array(),$from="")
 	{
 
+		//if( in_array($_SERVER['REMOTE_ADDR'],['127.0.0.1'])) return false;
+
 		$message = \template($tpl,$data);
 
 		//Create a new PHPMailer instance
@@ -29,17 +31,20 @@ class Mailer {
 		//Attach an image file
 		//$mail->addAttachment('images/phpmailer_mini.png');
 		//send the message, check for errors
-
 		if (!$mail->send()) {
+		    //echo "Mailer Error: " . $mail->ErrorInfo;
 		    log_message("Mailer Error: " . $mail->ErrorInfo);
 		    return false;
-		} 
-
-		return true;
+		} else {
+		    return true;
+		}
 	}
 
 	function template($tpl,$data=array())
 	{
+
+		@extract($data);
+		
 		$str = "";
 		$template = PATH_VIEWS . ( str_replace(".","/",$tpl) ) . '.php';
 
