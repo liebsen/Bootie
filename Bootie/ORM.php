@@ -540,7 +540,7 @@ class ORM
 	/**
 	 * Save the current object to the database
 	 */
-	public function save()
+	public function save($force_insert = false)
 	{
 		if( ! $this->changed) return $this;
 
@@ -550,7 +550,7 @@ class ORM
 			$data[$column] = $this->data[$column];
 		}
 
-		if(isset($this->data[static::$key]))
+		if(isset($this->data[static::$key]) AND ! $force_insert)
 		{
 			$this->update($data);
 		}
