@@ -23,6 +23,8 @@ class ORM
 	// object data, related, changed, loaded, saved
 	public $data, $related, $changed, $loaded, $saved;
 
+	public static $connection = 'default';
+	public static $connections = array();
 	public static $db;
 	public static $table;
 	public static $key = 'id';
@@ -35,8 +37,7 @@ class ORM
 	public static $order_by;
 	public static $cache = 0;
 	public static $cascade_delete = FALSE;
-	public static $connection = 'default';
-	public static $connections = array();
+
 
 	/**
 	 * Create a new database entity object
@@ -291,7 +292,7 @@ class ORM
 		}
 		else
 		{
-			throw new \Exception(get_class($this). " propery $alias not found");
+			throw new \Exception(get_class($this). " property $alias not found");
 		}
 	}
 
@@ -315,7 +316,6 @@ class ORM
 
 		// Append the default filter options
 		$args = $args + array(array(), 0, 0, array());
-
 
 		// Is this a has one/many relation?
 		if(isset(static::$has[$alias]))

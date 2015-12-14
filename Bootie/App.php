@@ -80,6 +80,7 @@ class App {
 	 */
 	function dispatch( $route, $match )
 	{
+
 		$controller = new $route->class;
 
 		if( ! in_array(REQUEST_METHOD, self::$request_methods) OR REQUEST_METHOD !== strtoupper($route->request_method) OR ! method_exists($controller, $route->method))
@@ -97,7 +98,7 @@ class App {
     	 	self::$layout = $controller::$layout;
     	}
 				
-		$result = call_user_func_array([$controller,$route->method], $match);
+		$result = call_user_func_array(array($controller,$route->method), $match);
 
 		if( isset($route->after) AND is_callable( $filter = self::$filters[$route->after] ))
 		{

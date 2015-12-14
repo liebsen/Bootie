@@ -58,6 +58,7 @@ class Database
 	 */
 	public function connect()
 	{
+
 		extract($this->config);
 
 		// Clear config for security reasons
