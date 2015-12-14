@@ -49,7 +49,7 @@ class Mailer {
 		$template = PATH_VIEWS . ( str_replace(".","/",$tpl) ) . '.php';
 
 		if(file_exists($template)){
-			$str= file_get_contents($template);
+			$str = file_get_contents($template);
 		}
 
 		return $str;
