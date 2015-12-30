@@ -76,6 +76,22 @@ class App {
 	}
 
 	/**
+	 * Collects a set of routes instructions
+	 */
+	
+	static function resource( $resource, $route = null )
+	{
+	    if($resource)
+	    {
+			App::route($resource . '', [ 'uses' => $route['uses'] . '@index','before' => $route['before']]);
+			App::route($resource . '/(\d+)', [ 'uses' => $route['uses'] . '@edit','before' => $route['before']]);
+			App::route($resource . '/create', [ 'uses' => $route['uses'] . '@create','before' => $route['before']]);
+			App::route($resource . '/update/(\d+)', [ 'uses' => $route['uses'] . '@update','method' => 'post','before' => $route['before']]);
+			App::route($resource . '/delete/(\d+)', [ 'uses' => $route['uses'] . '@delete','method' => 'post','before' => $route['before']]);
+	    } 
+	}
+
+	/**
 	 * Dispatches a controller
 	 */
 	function dispatch( $route, $match )
