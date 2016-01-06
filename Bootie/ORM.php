@@ -536,6 +536,20 @@ class ORM
 		}
 	}
 
+	/**
+	 * Return the orm object which matches the id condition
+	 *
+	 * @param int $id 
+	 * @return int
+	 */
+
+	public static function find(int $id = NULL)
+	{
+		if($row = self::row([static::$key => $id]))
+		{
+			return $row;
+		}
+	}
 
 	/**
 	 * Save the current object to the database
