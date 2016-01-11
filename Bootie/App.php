@@ -134,7 +134,7 @@ class App {
 	/**
 	 * Compiles route data
 	 */
-	private function compile($route){
+	static private function compile($route){
 		return (object) array(
 			'class' => strstr($route['uses'],'@',true),
 			'method' => substr($route['uses'],strrpos($route['uses'],'@')+1),

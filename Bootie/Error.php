@@ -115,7 +115,7 @@ class Error
 	 */
 	public static function backtrace($offset, $limit = 5)
 	{
-		$trace = array_slice(debug_backtrace(), $offset, $limit);
+		$trace = array_reverse(array_slice(debug_backtrace(), $offset, $limit));
 
 		foreach($trace as $i => &$v)
 		{
