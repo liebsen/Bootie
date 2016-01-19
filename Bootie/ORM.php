@@ -543,7 +543,7 @@ class ORM
 	 * @return int
 	 */
 
-	public static function find(int $id = NULL)
+	public static function find($id = NULL)
 	{
 		if($row = self::row([static::$key => $id]))
 		{
