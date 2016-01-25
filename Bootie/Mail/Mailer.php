@@ -2,12 +2,11 @@
 
 class Mailer {
 
-	public function send($recipient,$subject,$tpl,$data=array(),$from="")
+	public function send($recipient,$subject,$tpl=null,$data=array(),$from="")
 	{
 
-		//if( in_array($_SERVER['REMOTE_ADDR'],['127.0.0.1'])) return false;
-
-		$message = \template($tpl,$data);
+		if($tpl)	$message = \template($tpl,$data);
+		else $message = $data['message'];
 
 		//Create a new PHPMailer instance
 		$mail = new \Bootie\Mail\PHPMailerLite;
