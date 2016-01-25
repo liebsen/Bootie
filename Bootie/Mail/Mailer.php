@@ -2,7 +2,7 @@
 
 class Mailer {
 
-	public function send($recipient,$subject,$tpl=null,$data=array(),$from="")
+	public function send($recipient,$subject,$data=array(),$tpl=null,$from="")
 	{
 
 		if($tpl)	$message = \template($tpl,$data);
