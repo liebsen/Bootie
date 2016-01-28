@@ -8,28 +8,17 @@ class Mailer {
 		if($tpl)	$message = \template($tpl,$data);
 		else $message = $data['message'];
 
-		//Create a new PHPMailer instance
 		$mail = new \Bootie\Mail\PHPMailerLite;
-		// Set PHPMailer to use the sendmail transport
 		$mail->isSendmail();
-		//Set who the message is to be sent from
-		$mail->setFrom('noreply@devmeta.net', 'Devmeta Blogs');
-		//Set an alternative reply-to address
-		$mail->addReplyTo('noreply@devmeta.net', 'Devmeta Blogs');
-		//Set who the message is to be sent to
-		$mail->addAddress($recipient, 'John Doe');
-		//Set the subject line
+		$mail->setFrom(config()->mailer->from,config()->mailer->title);
+		$mail->addReplyTo(config()->mailer->from,config()->mailer->title);
+		$mail->addAddress($recipient);
 		$mail->Subject = utf8_decode($subject);
 
 		$mail->isHTML(true);   
-		//Read an HTML message body from an external file, convert referenced images to embedded,
-		//convert HTML into a basic plain-text alternative body
 		$mail->msgHTML($message);
-		//Replace the plain text body with one created manually
 		$mail->AltBody = strip_tags($message);
-		//Attach an image file
-		//$mail->addAttachment('images/phpmailer_mini.png');
-		//send the message, check for errors
+
 		if (!$mail->send()) {
 		    //echo "Mailer Error: " . $mail->ErrorInfo;
 		    log_message("Mailer Error: " . $mail->ErrorInfo);
