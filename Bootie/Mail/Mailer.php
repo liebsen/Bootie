@@ -10,8 +10,8 @@ class Mailer {
 
 		$mail = new \Bootie\Mail\PHPMailerLite;
 		$mail->isSendmail();
-		$mail->setFrom(config()->mailer->from,config()->mailer->title);
-		$mail->addReplyTo(config()->mailer->from,config()->mailer->title);
+		$mail->setFrom(config()->mailer['from'],config()->mailer['title']);
+		$mail->addReplyTo(config()->mailer['from'],config()->mailer['title']);
 		$mail->addAddress($recipient);
 		$mail->Subject = utf8_decode($subject);
 
