@@ -44,7 +44,7 @@ class Error
 			return print $message;
 		}
 
-		\Bootie\App::view('system/error',[
+		\Bootie\App::view('system.' . (config()->debug ? 'debug' : 'error'),[
 			'error' => $error,
 			'code' => $code
 		],null,true);
@@ -69,8 +69,7 @@ class Error
 			{
 				return print $message;
 			}
-
-			\Bootie\App::view('system/exception',[
+			\Bootie\App::view('system.' . (config()->debug ? 'exception' : 'error'),[
 				'exception' => $e
 			],null,true);
 		}
