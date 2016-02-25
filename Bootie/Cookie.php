@@ -24,18 +24,18 @@ class Cookie
 	 * @param array $config settings
 	 * @return mixed
 	 */
-	public static function get($name, $config = NULL)
+	public static function get($name)
 	{
 		// Use default config settings if needed
-		$config = $config ?: static::$settings;
+		extract(config()->cookie);
 
 		if(isset($_COOKIE[$name]))
 		{
 			// Decrypt cookie using cookie key
-			if($v = json_decode(Cipher::decrypt(base64_decode($_COOKIE[$name]), $config['key'])))
+			if($v = json_decode(Cipher::decrypt(base64_decode($_COOKIE[$name]), $key)))
 			{
 				// Has the cookie expired?
-				if($v[0] < $config['timeout'])
+				if($v[0] < $timeout)
 				{
 					return is_scalar($v[1])?$v[1]:(array)$v[1];
 				}
@@ -54,12 +54,11 @@ class Cookie
 	 * @param array $config settings
 	 * return boolean
 	 */
-	public static function set($name, $value, $config = NULL)
+	public static function set($name, $value)
 	{
 		// Use default config settings if needed
-		$config = $config ?: static::$settings;
-		extract($config);
-		
+		extract(config()->cookie);
+
 		// If the cookie is being removed we want it left blank
 		$value = $value ? base64_encode(Cipher::encrypt(json_encode(array(time(), $value)), $key)) : '';
 
