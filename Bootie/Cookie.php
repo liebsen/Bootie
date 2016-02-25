@@ -57,8 +57,9 @@ class Cookie
 	public static function set($name, $value, $config = NULL)
 	{
 		// Use default config settings if needed
-		extract($config ?: static::$settings);
-
+		$config = $config ?: static::$settings;
+		extract($config);
+		
 		// If the cookie is being removed we want it left blank
 		$value = $value ? base64_encode(Cipher::encrypt(json_encode(array(time(), $value)), $key)) : '';
 
