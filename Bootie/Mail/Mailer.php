@@ -21,7 +21,7 @@ class Mailer {
 
 		if (!$mail->send()) {
 		    //echo "Mailer Error: " . $mail->ErrorInfo;
-		    log_message("Mailer Error: " . $mail->ErrorInfo);
+		    \log_message("Mailer Error: " . $mail->ErrorInfo);
 		    return false;
 		} else {
 		    return true;

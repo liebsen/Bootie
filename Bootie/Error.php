@@ -34,7 +34,7 @@ class Error
 		if((error_reporting() & $code) === 0) return TRUE;
 
 		$message = "[$code] $error [$file] ($line)";
-		log_message($message);
+		\log_message($message);
 
 		self::$found = TRUE;
 		self::header();
@@ -62,7 +62,7 @@ class Error
 
 		try
 		{
-			log_message($message);
+			\log_message($message);
 			self::header();
 
 			if(AJAX_REQUEST)
