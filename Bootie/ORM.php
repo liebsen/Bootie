@@ -442,7 +442,7 @@ class ORM
 		}
 
 		// Load database
-		$db = new \Bootie\Database(config()->database['connections'][$key]);
+		$db = new \Bootie\Database($key);
 	
 		self::$connections[$key] = $db;
 
