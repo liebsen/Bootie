@@ -447,7 +447,7 @@ class ORM
 		self::$connections[$key] = $db;
 
 		return self::$db = $db;
-	}
+	} 
 	
 
 	/**
