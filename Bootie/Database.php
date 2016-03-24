@@ -24,7 +24,7 @@ class Database
 	public $statements = array();
 
 	public $connection_key = NULL;
-	
+
 	protected $config = array();
 
 	public static $queries = array();
@@ -46,6 +46,8 @@ class Database
 
 		// Save config for connection
 		$this->config = $config;
+
+		$this->connection_key = $key;
 
 		// MySQL uses a non-standard column identifier
 		if($this->type == 'mysql') $this->i = '`';
