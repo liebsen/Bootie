@@ -23,6 +23,8 @@ class Database
 
 	public $statements = array();
 
+	public $connection_key = NULL;
+	
 	protected $config = array();
 
 	public static $queries = array();
@@ -34,13 +36,10 @@ class Database
 	 *
 	 * @param array $config
 	 */
-	public function __construct(array $config = null)
+	public function __construct($key = 'default')
 	{
 
-		if( ! $config)
-		{
-			$config = config()->database['connections']['default'];
-		}
+		$config = config()->database['connections'][$key];
 
 		// Auto-detect database type from DNS
 		$this->type = current(explode(':', $config['dns'], 2));
@@ -177,14 +176,49 @@ class Database
 			$statement = $this->pdo->prepare($sql);
 		}
 
-		$statement->execute($params);
-		//$statement = $this->pdo->query($sql);
+		// If sql cannot be executed then log it
+		try {
+			$statement->execute($params);
+		} catch(\PDOException $e){
+			\log_message("[QUERYFAILED] [{$this->connection_key}] " .  self::interpolate_sql($sql,$params));
+		}
 
 		// Save query results by database type
 		self::$queries[$this->type][] = array(microtime(TRUE) - $time, $sql);
 
 		return $statement;
 	}
+
+
+	/**
+	 * Interpolates SQL query for logging purpose
+	 *
+	 * @param string $sql query to run
+	 * @param array $params the prepared query params
+	 * @return string
+	 */
+
+	public static function interpolate_sql($query, $params) {
+	    $keys = array();
+
+	    $params = array_map(function($str) {
+  			return '\''.$str.'\'';
+		}, $params);	
+	    
+	    foreach ($params as $key => $value) {
+
+	        if (is_string($key)) {
+	            $keys[] = '/:'.$key.'/';
+	        } else {
+	            $keys[] = '/[?]/';
+	        }
+	    }
+
+	    $query = preg_replace($keys, $params, $query, 1, $count);
+
+	    return $query;
+	}
+
 
 
 	/**

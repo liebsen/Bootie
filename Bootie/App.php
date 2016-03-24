@@ -18,9 +18,7 @@ class App {
 	    foreach(self::$routes as $path => $route) 
 	    {
 	    	$request_method = $route->request_method ? : 'GET';
-
-	        if(preg_match("~^$path$~", $uri, $match) AND strtoupper($request_method) == REQUEST_METHOD )
-	        {
+	        if(preg_match("~^$path$~", $uri, $match) OR preg_match("~^$path/$~", $uri, $match) AND strtoupper($request_method) == REQUEST_METHOD )
 				return $this->dispatch($route,array_slice($match,1));
 	        }
 	    }
@@ -48,7 +46,7 @@ class App {
 		}
 
 		// Load database
-		$db = new \Bootie\Database(config()->database['connections'][$key]);
+		$db = new \Bootie\Database($key);
 
 		\Bootie\ORM::$db = $db;
 		\Bootie\ORM::$connections[$key] = $db;
