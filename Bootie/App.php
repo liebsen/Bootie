@@ -211,7 +211,7 @@ class App {
 
 		$content = ob_get_clean();
 
-		if( $layout AND ! $skip_layout ) 
+		if( !AJAX_REQUEST AND $layout AND ! $skip_layout) 
 		{
 			return include $path . 'layouts/' . str_replace(".","/",$layout) . EXT;	
 		}
