@@ -182,7 +182,8 @@ class Database
 		try {
 			$statement->execute($params);
 		} catch(\PDOException $e){
-			\log_message("[QUERYFAILED] [{$this->connection_key}] " .  self::interpolate_sql($sql,$params));
+			\log_message("[SQLERROR] [{$this->connection_key}] " .  self::interpolate_sql($sql,$params));
+			\log_message($e->getMessage());
 		}
 
 		// Save query results by database type
