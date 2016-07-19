@@ -348,7 +348,9 @@ class Database
 			// MySQL/SQLite use a different LIMIT syntax
 			$sql .= $this->type == 'pgsql' ? " LIMIT $limit OFFSET $offset" : " LIMIT $offset, $limit";
 		}
-		//var_dump($sql);
+
+		//echo "<pre>";
+		//var_dump(self::interpolate_sql($sql,$params));
 		return array($sql, $params);
 	}
 

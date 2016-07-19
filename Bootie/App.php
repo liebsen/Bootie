@@ -13,12 +13,13 @@ class App {
 	/**
 	 * Determine which controller gets the route.
 	 */
+
 	function run($uri)
 	{
 	    foreach(self::$routes as $path => $route) 
 	    {
 	    	$request_method = $route->request_method ? : 'GET';
-	        if(preg_match("~^$path$~", $uri, $match) AND strtoupper($request_method) == REQUEST_METHOD ){
+	        if(preg_match("~^$path$~", strtolower($request_method).':'.$uri, $match) AND strtoupper($request_method) == REQUEST_METHOD ){
 				return $this->dispatch($route,array_slice($match,1));
 	        }
 	    }
@@ -69,7 +70,8 @@ class App {
 	{
 	    if($route)
 	    {
-	    	return self::$routes[$uri] = self::compile($route);
+	    	$method = !empty($route['method'])?$route['method']: 'GET';
+	    	return self::$routes[strtolower($method).':'.$uri] = self::compile($uri,$route);
 	    } 
 	}
 
@@ -81,11 +83,13 @@ class App {
 	{
 	    if($resource)
 	    {
-			App::route($resource . '', [ 'uses' => $route['uses'] . '@index','before' => $route['before']]);
-			App::route($resource . '/(\d+)', [ 'uses' => $route['uses'] . '@edit','before' => $route['before']]);
-			App::route($resource . '/create', [ 'uses' => $route['uses'] . '@create','before' => $route['before']]);
-			App::route($resource . '/update/(\d+)', [ 'uses' => $route['uses'] . '@update','method' => 'post','before' => $route['before']]);
-			App::route($resource . '/delete/(\d+)', [ 'uses' => $route['uses'] . '@delete','method' => 'post','before' => $route['before']]);
+	    	$before =!empty($route['before'])?$route['before']:null;
+	    	$after = !empty($route['after'])?$route['after']:null;
+			App::route($resource, [ 'uses' => $route['uses'] . '@index','before' => $before, 'after' => $after]);
+			App::route($resource, [ 'uses' => $route['uses'] . '@update','before' => $before, 'after' => $after,'method' => 'post']);
+			App::route($resource . '/(\d+)', [ 'uses' => $route['uses'] . '@edit','before' => $before, 'after' => $after]);
+			App::route($resource . '/(\d+)', [ 'uses' => $route['uses'] . '@update','before' => $before, 'after' => $after,'method' => 'put']);
+			App::route($resource . '/(\d+)', [ 'uses' => $route['uses'] . '@delete','before' => $before, 'after' => $after,'method' => 'delete']);
 	    } 
 	}
 
@@ -101,7 +105,7 @@ class App {
 		{
 			throw new \Exception('Invalid Request Method.');
 		}
-		
+
 		if( isset($route->before) AND is_callable( $filter = self::$filters[$route->before] ))
 		{
 			call_user_func($filter);
@@ -121,7 +125,7 @@ class App {
 
 		if(AJAX_REQUEST)
 		{
-			return self::ajax($result);
+			return self::json($result);
 		} 
 
 		self::close_database_connections();
@@ -132,8 +136,9 @@ class App {
 	/**
 	 * Compiles route data
 	 */
-	static private function compile($route){
+	static private function compile($key,$route){
 		return (object) array(
+			'uri'=>substr($key,strrpos($key,':')),
 			'class' => strstr($route['uses'],'@',true),
 			'method' => substr($route['uses'],strrpos($route['uses'],'@')+1),
 			'request_method' => isset($route['method']) ? strtoupper($route['method']) : 'GET',
@@ -159,9 +164,9 @@ class App {
 	}
 
 	/**
-	 * Returns ajax
+	 * Returns json
 	 */
-	static public function ajax($data = array())
+	static public function json($data = array())
 	{
 		if(is_array($data)) 
 		{

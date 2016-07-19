@@ -402,7 +402,6 @@ class ORM
 	public static function select($func, $column, $model = NULL, $where = NULL, $limit = 0, $offset = 0, $order = NULL)
 	{
 		self::check_connection();
-
 		$model = $model ?: get_called_class();
 		$order = ($order ?: array()) + (static::$order_by ?: array());
 
@@ -410,7 +409,7 @@ class ORM
 		if($func != 'fetch')
 		{
 			$limit = $offset = 0;
-			$order = array();
+			//$order = array();
 		}
 
 		// Generate select statement SQL
@@ -527,9 +526,9 @@ class ORM
 	 * @param array $where conditions
 	 * @return int
 	 */
-	public static function row(array $where = NULL)
+	public static function row(array $where = NULL, $order = NULL)
 	{
-		if($id = self::select('column', static::$key, NULL, $where))
+		if($id = self::select('column', static::$key, NULL, $where,0,0,$order))
 		{
 			$class = get_called_class();
 			return new $class($id);

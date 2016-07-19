@@ -19,7 +19,7 @@ class Image {
     static function destroy_group($filename, $type = ''){
 
       $result = array();
-      $result[] = \Bootie\Image::destroy($filename,$type . '/orig');
+      $result[] = \Bootie\Image::destroy($filename,$type . '/cp');
 
       foreach(config()->img_sizes as $id => $values)
       {
