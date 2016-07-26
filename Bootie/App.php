@@ -99,9 +99,13 @@ class App {
 	function dispatch( $route, $match )
 	{
 
-		$controller = new $route->class;
+		$controller = null;
 
-		if( ! in_array(REQUEST_METHOD, self::$request_methods) OR REQUEST_METHOD !== strtoupper($route->request_method) OR ! method_exists($controller, $route->method))
+		if(strlen($route->class)){
+			$controller = new $route->class;
+		}
+
+		if( ! in_array(REQUEST_METHOD, self::$request_methods) OR REQUEST_METHOD !== strtoupper($route->request_method) OR ! method_exists($controller, $route->method) AND is_callable($route->closure) === 0)
 		{
 			throw new \Exception('Invalid Request Method.');
 		}
@@ -111,12 +115,16 @@ class App {
 			call_user_func($filter);
 		}
 
-    	if(isset($controller::$layout))
+    	if($controller AND isset($controller::$layout))
     	{
     	 	self::$layout = $controller::$layout;
     	}
-				
-		$result = call_user_func_array(array($controller,$route->method), $match);
+			
+		if($controller AND method_exists($controller, $route->method)) {
+			$result = call_user_func_array(array($controller,$route->method), $match);
+		} else if(is_callable($route->closure)){
+			call_user_func($route->closure);
+		}
 
 		if( isset($route->after) AND is_callable( $filter = self::$filters[$route->after] ))
 		{
@@ -138,9 +146,10 @@ class App {
 	 */
 	static private function compile($key,$route){
 		return (object) array(
-			'uri'=>substr($key,strrpos($key,':')),
-			'class' => strstr($route['uses'],'@',true),
-			'method' => substr($route['uses'],strrpos($route['uses'],'@')+1),
+			'uri' => @substr($key,strrpos($key,':')),
+			'closure' => $route['uses'],
+			'class' => @strstr($route['uses'],'@',true),
+			'method' => @substr($route['uses'],strrpos($route['uses'],'@')+1),
 			'request_method' => isset($route['method']) ? strtoupper($route['method']) : 'GET',
 			'before' => isset($route['before'])?$route['before']:null,
 			'after' => isset($route['after'])?$route['after']:null,
