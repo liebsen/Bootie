@@ -21,7 +21,7 @@ class ORM
 {
 
 	// object data, related, changed, loaded, saved
-	public $data, $related, $changed, $loaded, $saved;
+	public $data, $related, $changed, $loaded, $saved, $options;
 
 	public static $connection = 'default';
 	public static $connections = array();
