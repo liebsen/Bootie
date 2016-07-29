@@ -100,7 +100,8 @@ class App {
 	{
 
 		$controller = null;
-
+		$result = null;
+		
 		if(strlen($route->class)){
 			$controller = new $route->class;
 		}
