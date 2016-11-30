@@ -473,7 +473,7 @@ class ORM
 	public static function paginate(array $order_by = NULL, array $where = NULL, $perpage = NULL)
 	{
 		$perpage = $perpage ?: static::$perpage;
-		$paginated = self::fetch($where, $perpage, get('page') ? ceil((get('page') - 1) * $perpage) : 0, $order_by);
+		$paginated = self::fetch($where, $perpage, param('page') ? ceil((param('page') - 1) * $perpage) : 0, $order_by);
 
 		self::$perpage = $perpage;
 		self::$count = self::count($where);
